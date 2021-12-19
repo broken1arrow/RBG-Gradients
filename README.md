@@ -29,4 +29,21 @@ TextTranslator.toSpigotFormat("your message");
 TextTranslator.isValidHexaCode("your hex you want to check");
 
 ```
- 
+## To get the api
+```
+
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+	
+   </repositories>
+ 	<dependency>
+	    <groupId>com.github.broken1arrow</groupId>
+	    <artifactId>RBG-Gradients</artifactId>
+	    <version>version</version>
+	</dependency>
+     </dependencies>
+```
