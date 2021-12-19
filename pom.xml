@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.broken.lib.rbg</groupId>
-    <artifactId>broken</artifactId>
+    <artifactId>rbg.gradiens</artifactId>
     <version>0.08-SNAPSHOT</version>
 
     <properties>
@@ -41,11 +41,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.18-R0.1-SNAPSHOT</version>
-            <classifier>remapped-mojang</classifier>
-            <scope>provided</scope>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -99,7 +97,6 @@
                     <execution>
                         <phase>package</phase>
                         <goals>
-                            <goal>shade</goal>
                         </goals>
                         <!--
                             By default we configure the Foundation to include itself and all classes when

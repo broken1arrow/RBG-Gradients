@@ -1,5 +1,6 @@
 package org.broken.lib.rbg;
 
+
 import org.json.simple.JSONObject;
 
 /**
@@ -118,7 +119,7 @@ public class Component {
 		}
 		if (message != null)
 			json.put("text", message);
-		return json.toJSONString();
+		return json.toString();
 
 	}
 
