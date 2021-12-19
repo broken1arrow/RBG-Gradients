@@ -119,7 +119,7 @@ public class Component {
 		}
 		if (message != null)
 			json.addProperty("text", message);
-		return json.toString();
+		return json + "";
 
 	}
 

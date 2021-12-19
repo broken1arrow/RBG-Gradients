@@ -155,6 +155,7 @@ public class TextTranslator {
 		if (jsonarray.size() > 1) {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.add("extra", jsonarray.deepCopy());
+			jsonObject.addProperty("text", "");
 			JSONObject json = new JSONObject();
 			json.put("extra", components);
 			json.put("text", "");
