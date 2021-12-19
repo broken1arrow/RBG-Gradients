@@ -123,6 +123,28 @@ public class Component {
 
 	}
 
+	public JsonObject toJson() {
+		JsonObject json = new JsonObject();
+		if (colorCode != null)
+			json.addProperty("color", colorCode);
+		if (!reset) {
+			if (bold)
+				json.addProperty("bold", true);
+			if (strikethrough)
+				json.addProperty("strikethrough", true);
+			if (underline)
+				json.addProperty("underline", true);
+			if (italic)
+				json.addProperty("italic", true);
+			if (obfuscated)
+				json.addProperty("obfuscated", true);
+		}
+		if (message != null)
+			json.addProperty("text", message);
+		return json;
+
+	}
+
 	/**
 	 * Create json, you have several options to chose from.
 	 */

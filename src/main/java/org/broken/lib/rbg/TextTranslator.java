@@ -122,7 +122,7 @@ public class TextTranslator {
 					//System.out.println("builder oute " + builder.toString());
 					compenent.message(builder.toString());
 					builder = new StringBuilder();
-					jsonarray.add(compenent.build().toString());
+					jsonarray.add(compenent.build().toJson());
 					components.add(compenent.build());
 					compenent = new Component.Builder();
 
@@ -151,7 +151,7 @@ public class TextTranslator {
 
 		compenent.message(builder.toString());
 		components.add(compenent.build());
-		jsonarray.add(compenent.build().toString());
+		jsonarray.add(compenent.build().toJson());
 		if (jsonarray.size() > 1) {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.add("extra", jsonarray.deepCopy());
