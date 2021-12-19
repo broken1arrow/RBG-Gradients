@@ -3,10 +3,8 @@ package org.broken.lib.rbg;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.md_5.bungee.api.ChatColor;
-import org.json.simple.JSONObject;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -53,7 +51,6 @@ public class TextTranslator {
 
 	public static String toCompenent(String message, String defaultColor) {
 		JsonArray jsonarray = new JsonArray();
-		List<Component> components = new ArrayList<>();
 		Component.Builder compenent = new Component.Builder();
 		Matcher matcherGradient = GRADIENT_PATTERN.matcher(message);
 		if (defaultColor == null || defaultColor.equals(""))
@@ -123,7 +120,6 @@ public class TextTranslator {
 					compenent.message(builder.toString());
 					builder = new StringBuilder();
 					jsonarray.add(compenent.build().toJson());
-					components.add(compenent.build());
 					compenent = new Component.Builder();
 
 				}
@@ -150,16 +146,12 @@ public class TextTranslator {
 		}
 
 		compenent.message(builder.toString());
-		components.add(compenent.build());
 		jsonarray.add(compenent.build().toJson());
+		
 		if (jsonarray.size() > 1) {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.add("extra", jsonarray.deepCopy());
 			jsonObject.addProperty("text", "");
-			JSONObject json = new JSONObject();
-			json.put("extra", components);
-			json.put("text", "");
-			//return json.toJSONString();
 			return jsonObject.toString();
 		}
 		return compenent.build() + "";
