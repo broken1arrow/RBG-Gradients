@@ -25,6 +25,7 @@ TextTranslator.toCompenent("your message","set defult color");
 TextTranslator.toSpigotFormat("your message");
 
 //I have also added check you can use if a string contains valid hex colorcode.
+//I alredy check it in the code, but if you need chexk it self, you can use this.
 TextTranslator.isValidHexaCode("your hex you want to check");
 
 ```
