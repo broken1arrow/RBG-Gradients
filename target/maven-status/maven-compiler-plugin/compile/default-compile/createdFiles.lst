@@ -1,4 +1,4 @@
-org\broken\lib\rbg\Compenent$Builder.class
+org\broken\lib\rbg\Component.class
+org\broken\lib\rbg\Component$Builder.class
 org\broken\lib\rbg\TextTranslator.class
 org\broken\lib\rbg\ChatColors.class
-org\broken\lib\rbg\Compenent.class

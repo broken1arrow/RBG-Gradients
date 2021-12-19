@@ -50,8 +50,8 @@ public class TextTranslator {
 	 */
 
 	public static String toCompenent(String message, String defaultColor) {
-		List<Compenent> compenents = new ArrayList<>();
-		Compenent.Builder compenent = new Compenent.Builder();
+		List<Component> components = new ArrayList<>();
+		Component.Builder compenent = new Component.Builder();
 		Matcher matcherGradient = GRADIENT_PATTERN.matcher(message);
 		if (defaultColor == null || defaultColor.equals(""))
 			defaultColor = "white";
@@ -117,8 +117,8 @@ public class TextTranslator {
 					//System.out.println("builder oute " + builder.toString());
 					compenent.message(builder.toString());
 					builder = new StringBuilder();
-					compenents.add(compenent.build());
-					compenent = new Compenent.Builder();
+					components.add(compenent.build());
+					compenent = new Component.Builder();
 
 				}
 				if (format.equals(ChatColors.BOLD.getName())) {
@@ -144,11 +144,11 @@ public class TextTranslator {
 		}
 
 		compenent.message(builder.toString());
-		compenents.add(compenent.build());
+		components.add(compenent.build());
 
-		if (compenents.size() > 1) {
+		if (components.size() > 1) {
 			JSONObject json = new JSONObject();
-			json.put("extra", compenents);
+			json.put("extra", components);
 			json.put("text", "");
 			return json.toJSONString();
 		}

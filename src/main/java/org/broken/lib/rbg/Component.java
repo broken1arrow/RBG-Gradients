@@ -5,7 +5,7 @@ import org.json.simple.JSONObject;
 /**
  * Create one immutable instance.
  */
-public class Compenent {
+public class Component {
 
 	private final String colorCode;
 	private final String message;
@@ -16,7 +16,7 @@ public class Compenent {
 	private final boolean obfuscated;
 	private final boolean reset;
 
-	private Compenent(Builder builder) {
+	private Component(Builder builder) {
 		this.message = builder.message;
 		this.colorCode = builder.colorCode;
 		this.bold = builder.bold;
@@ -89,7 +89,7 @@ public class Compenent {
 	public boolean isObfuscated() {
 		return obfuscated;
 	}
-	
+
 	/**
 	 * Get if color are reseted or not.
 	 *
@@ -262,8 +262,8 @@ public class Compenent {
 		 * @return json with one row, if you want an array you have to add
 		 * it inside an array.
 		 */
-		public Compenent build() {
-			return new Compenent(this);
+		public Component build() {
+			return new Component(this);
 		}
 	}
 
