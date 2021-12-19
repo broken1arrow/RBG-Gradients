@@ -60,23 +60,27 @@ public class TextTranslator {
 			message = createGradient(message);
 		}
 		StringBuilder builder = new StringBuilder(message.length());
-		Matcher matcher = HEX_PATTERN.matcher(message);
 
-		/*if (matcher.find()) {
-			matcher.reset();
-			while (matcher.find()) {
-				String match = matcher.group(0);
-				message = message.replace(match, match.replace("<", "§"));
-			}
-		}*/
 		for (int i = 0; i < message.length(); i++) {
 			char letter = message.charAt(i);
 			boolean checkChar;
+			boolean checkHex = false;
+			StringBuilder hex = new StringBuilder();
 			if (i + 1 < message.length() && letter == ChatColors.COLOR_CHAR || letter == '&' || letter == '<') {
 				char msg = message.charAt(i + 1);
-				checkChar = checkIfColor(msg) || msg == '#';
-			} else
-				checkChar = false;
+
+				if (checkIfColor(msg)) {
+					checkChar = true;
+				}else if (msg == '#') {
+					for (int j = 0; j < 7; j++) {
+						hex.append(message.charAt(i + j));
+					}
+					boolean hexCode = isValidHexaCode(hex.toString());
+						checkChar = hexCode;
+						checkHex = hexCode;
+				}
+				else  checkChar = false;
+			} else checkChar = false;
 
 			if (checkChar) {
 				if (++i >= message.length()) {
@@ -89,17 +93,15 @@ public class TextTranslator {
 				}
 				String format;
 
-				//System.out.println("letter inside " + letter);
-
-				if (!checkIfColor(letter) && letter == '#') {
-					StringBuilder hex = new StringBuilder();
+				if (checkHex) {
+					/*StringBuilder hex = new StringBuilder();
 					for (int j = 0; j < 7; j++) {
 						hex.append(message.charAt(i + j));
 					}
 					if (!isValidHexaCode(hex.toString())) {
 						System.out.println("this " + hex + " are not a hex color");
 						continue;
-					}
+					}*/
 					format = hex.toString();
 					i += 7;
 				} else {
