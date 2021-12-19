@@ -1,7 +1,7 @@
 package org.broken.lib.rbg;
 
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
 
 /**
  * Create one immutable instance.
@@ -102,23 +102,23 @@ public class Component {
 
 	@Override
 	public String toString() {
-		JSONObject json = new JSONObject();
+		JsonObject json = new JsonObject();
 		if (colorCode != null)
-			json.put("color", colorCode);
+			json.addProperty("color", colorCode);
 		if (!reset) {
 			if (bold)
-				json.put("bold", true);
+				json.addProperty("bold", true);
 			if (strikethrough)
-				json.put("strikethrough", true);
+				json.addProperty("strikethrough", true);
 			if (underline)
-				json.put("underline", true);
+				json.addProperty("underline", true);
 			if (italic)
-				json.put("italic", true);
+				json.addProperty("italic", true);
 			if (obfuscated)
-				json.put("obfuscated", true);
+				json.addProperty("obfuscated", true);
 		}
 		if (message != null)
-			json.put("text", message);
+			json.addProperty("text", message);
 		return json.toString();
 
 	}

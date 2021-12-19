@@ -1,5 +1,7 @@
 package org.broken.lib.rbg;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import net.md_5.bungee.api.ChatColor;
 import org.json.simple.JSONObject;
 
@@ -50,6 +52,7 @@ public class TextTranslator {
 	 */
 
 	public static String toCompenent(String message, String defaultColor) {
+		JsonArray jsonarray = new JsonArray();
 		List<Component> components = new ArrayList<>();
 		Component.Builder compenent = new Component.Builder();
 		Matcher matcherGradient = GRADIENT_PATTERN.matcher(message);
@@ -63,9 +66,11 @@ public class TextTranslator {
 		Matcher matcher = HEX_PATTERN.matcher(message);
 
 		if (matcher.find()) {
-			String match = matcher.group(0);
-			System.out.println("matcher.find()" + match);
-			message = message.replace(matcher.group(0), matcher.group(0).replace("<", "§"));
+			matcher.reset();
+			while (matcher.find()) {
+				String match = matcher.group(0);
+				message = message.replace(match, match.replace("<", "§"));
+			}
 		}
 		for (int i = 0; i < message.length(); i++) {
 			char letter = message.charAt(i);
@@ -117,6 +122,7 @@ public class TextTranslator {
 					//System.out.println("builder oute " + builder.toString());
 					compenent.message(builder.toString());
 					builder = new StringBuilder();
+					jsonarray.add(compenent.build().toString());
 					components.add(compenent.build());
 					compenent = new Component.Builder();
 
@@ -145,12 +151,15 @@ public class TextTranslator {
 
 		compenent.message(builder.toString());
 		components.add(compenent.build());
-
-		if (components.size() > 1) {
+		jsonarray.add(compenent.build().toString());
+		if (jsonarray.size() > 1) {
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.add("extra", jsonarray.deepCopy());
 			JSONObject json = new JSONObject();
 			json.put("extra", components);
 			json.put("text", "");
-			return json.toJSONString();
+			//return json.toJSONString();
+			return jsonObject.toString();
 		}
 		return compenent.build() + "";
 	}
