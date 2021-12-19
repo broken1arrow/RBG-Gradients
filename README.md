@@ -22,7 +22,10 @@ TextTranslator.toCompenent("your message");
 TextTranslator.toCompenent("your message","set defult color");
 
 //spigot format.
-TextTranslator.toSpigotFormat("your message")
+TextTranslator.toSpigotFormat("your message");
+
+//I have also added check you can use if a string contains valid hex colorcode.
+TextTranslator.isValidHexaCode("your hex you want to check");
 
 ```
  
