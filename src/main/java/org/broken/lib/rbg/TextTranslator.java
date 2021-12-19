@@ -62,23 +62,22 @@ public class TextTranslator {
 		StringBuilder builder = new StringBuilder(message.length());
 		Matcher matcher = HEX_PATTERN.matcher(message);
 
-		if (matcher.find()) {
+		/*if (matcher.find()) {
 			matcher.reset();
 			while (matcher.find()) {
 				String match = matcher.group(0);
 				message = message.replace(match, match.replace("<", "§"));
 			}
-		}
+		}*/
 		for (int i = 0; i < message.length(); i++) {
 			char letter = message.charAt(i);
 			boolean checkChar;
-			if (i + 1 < message.length() && letter == ChatColors.COLOR_CHAR || letter == '&') {
+			if (i + 1 < message.length() && letter == ChatColors.COLOR_CHAR || letter == '&' || letter == '<') {
 				char msg = message.charAt(i + 1);
 				checkChar = checkIfColor(msg) || msg == '#';
 			} else
 				checkChar = false;
 
-			//System.out.println("letter " + letter);
 			if (checkChar) {
 				if (++i >= message.length()) {
 					break;
@@ -147,7 +146,7 @@ public class TextTranslator {
 
 		compenent.message(builder.toString());
 		jsonarray.add(compenent.build().toJson());
-		
+
 		if (jsonarray.size() > 1) {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.add("extra", jsonarray.deepCopy());

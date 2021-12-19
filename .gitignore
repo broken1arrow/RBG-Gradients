@@ -130,6 +130,7 @@ hs_err_pid*
 
 ### Maven ###
 target/
+target/*
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -173,3 +174,7 @@ Temporary Items
 
 .idea/compiler.xml
 .idea/vcs.xml
+target/classes/org/broken/lib/rbg/ChatColors.class
+target/classes/org/broken/lib/rbg/TextTranslator.class
+.idea/misc.xml
+
