@@ -60,18 +60,19 @@ public class TextTranslator {
 			message = createGradient(message);
 		}
 		StringBuilder builder = new StringBuilder(message.length());
-
+		StringBuilder hex = new StringBuilder();
 		for (int i = 0; i < message.length(); i++) {
 			char letter = message.charAt(i);
 			boolean checkChar;
 			boolean checkHex = false;
-			StringBuilder hex = new StringBuilder();
+
 			if (i + 1 < message.length() && letter == ChatColors.COLOR_CHAR || letter == '&' || letter == '<') {
 				char msg = message.charAt(i + 1);
 
 				if (checkIfColor(msg)) {
 					checkChar = true;
 				}else if (msg == '#') {
+					hex = new StringBuilder();
 					for (int j = 0; j < 7; j++) {
 						hex.append(message.charAt(i + j));
 					}
@@ -203,7 +204,7 @@ public class TextTranslator {
 
 		while (gradiensMatcher.find()) {
 			String match = gradiensMatcher.group(0);
-			String[] split = match.split(":");
+			String[] split = match.substring(1,match.length()-1).split(":");
 			int startGradient = message.indexOf(match);
 			int stopGradient = checkForR(message.substring(startGradient)) != -1 ? startGradient + checkForR(message.substring(startGradient)) : message.length();
 
@@ -215,12 +216,12 @@ public class TextTranslator {
 				}
 			}
 
-			String[] messageFinal = coloriseMsg.split("");
-			int step = messageFinal.length;
+			//String[] messageFinal = coloriseMsg.split("");
+			int step = coloriseMsg.length();
 			if (split.length > 1) {
-				String startColor = split[0].replace("<", "");
+				String startColor = split[0];
 				Color firstColor = hexToRgb(startColor);
-				Color endColor = hexToRgb(split[1].replace(">", ""));
+				Color endColor = hexToRgb(split[1]);
 				int stepRed = Math.abs(firstColor.getRed() - endColor.getRed()) / (step - 1);
 				int stepGreen = Math.abs(firstColor.getGreen() - endColor.getGreen()) / (step - 1);
 				int stepBlue = Math.abs(firstColor.getBlue() - endColor.getBlue()) / (step - 1);
@@ -234,10 +235,10 @@ public class TextTranslator {
 				for (int i = 0; i < step; i++) {
 					String colors = convertRGBtoHex(firstColor.getRed() + ((stepRed * i) * direction[0]), firstColor.getGreen() + ((stepGreen * i) * direction[1]), firstColor.getBlue() + ((stepBlue * i) * direction[2]));
 					if (isFirstrun) {
-						builder.append("§").append(startColor).append(">").append(specialSign).append(messageFinal[i]);
+						builder.append("§").append(startColor).append(">").append(specialSign).append(coloriseMsg.charAt(i));
 						isFirstrun = false;
 					} else {
-						builder.append("§").append(colors).append(">").append(specialSign).append(messageFinal[i]);
+						builder.append("§").append(colors).append(">").append(specialSign).append(coloriseMsg.charAt(i));
 					}
 				}
 				builder.append(message, stopGradient, messageLength);
