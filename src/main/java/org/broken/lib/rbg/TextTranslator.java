@@ -71,16 +71,15 @@ public class TextTranslator {
 
 				if (checkIfColor(msg)) {
 					checkChar = true;
-				}else if (msg == '#') {
+				} else if (msg == '#') {
 					hex = new StringBuilder();
 					for (int j = 0; j < 7; j++) {
-						hex.append(message.charAt(i + j));
+						hex.append(message.charAt(i + 1 + j));
 					}
 					boolean hexCode = isValidHexaCode(hex.toString());
-						checkChar = hexCode;
-						checkHex = hexCode;
-				}
-				else  checkChar = false;
+					checkChar = hexCode;
+					checkHex = hexCode;
+				} else checkChar = false;
 			} else checkChar = false;
 
 			if (checkChar) {
@@ -152,7 +151,7 @@ public class TextTranslator {
 
 		if (jsonarray.size() > 1) {
 			JsonObject jsonObject = new JsonObject();
-			jsonObject.add("extra", jsonarray.deepCopy());
+			jsonObject.add("extra", jsonarray);
 			jsonObject.addProperty("text", "");
 			return jsonObject.toString();
 		}
@@ -199,24 +198,24 @@ public class TextTranslator {
 		Matcher gradiensMatcher = GRADIENT_PATTERN.matcher(message);
 		StringBuilder specialSign = new StringBuilder();
 		StringBuilder builder = new StringBuilder();
-		boolean isFirstrun = true;
 		int messageLength = message.length();
-
+		int nextGradiensPos = 0;
 		while (gradiensMatcher.find()) {
 			String match = gradiensMatcher.group(0);
-			String[] split = match.substring(1,match.length()-1).split(":");
-			int startGradient = message.indexOf(match);
+
+			int startGradient = nextGradiensPos > 0 ? nextGradiensPos : message.indexOf(match);
 			int stopGradient = checkForR(message.substring(startGradient)) != -1 ? startGradient + checkForR(message.substring(startGradient)) : message.length();
 
+			String[] split = match.substring(1, match.length() - 1).split(":");
 			String coloriseMsg = message.substring(startGradient, stopGradient).replace(match, "");
+
 			for (String color : SPECIAL_SIGN) {
 				if (coloriseMsg.contains(color)) {
+					specialSign = new StringBuilder();
 					specialSign.append(color);
 					coloriseMsg = coloriseMsg.replace(color, "");
-				}
+				} else specialSign = new StringBuilder();
 			}
-
-			//String[] messageFinal = coloriseMsg.split("");
 			int step = coloriseMsg.length();
 			if (split.length > 1) {
 				String startColor = split[0];
@@ -231,17 +230,20 @@ public class TextTranslator {
 						firstColor.getGreen() < endColor.getGreen() ? +1 : -1,
 						firstColor.getBlue() < endColor.getBlue() ? +1 : -1};
 
-				builder.append(message, 0, startGradient);
+				builder.append(message, Math.max(nextGradiensPos, 0), startGradient);
 				for (int i = 0; i < step; i++) {
 					String colors = convertRGBtoHex(firstColor.getRed() + ((stepRed * i) * direction[0]), firstColor.getGreen() + ((stepGreen * i) * direction[1]), firstColor.getBlue() + ((stepBlue * i) * direction[2]));
-					if (isFirstrun) {
-						builder.append("§").append(startColor).append(">").append(specialSign).append(coloriseMsg.charAt(i));
-						isFirstrun = false;
-					} else {
-						builder.append("§").append(colors).append(">").append(specialSign).append(coloriseMsg.charAt(i));
+					builder.append("<").append(colors).append(">").append(specialSign).append(coloriseMsg.charAt(i));
+				}
+
+				String gradentMessage = message.substring(stopGradient, messageLength);
+				if (gradentMessage.contains("<#")) {
+					Matcher gradiensMatch = GRADIENT_PATTERN.matcher(gradentMessage);
+					if (gradiensMatch.find()) {
+						nextGradiensPos = (stopGradient + gradentMessage.indexOf(gradiensMatch.group(0)));
 					}
 				}
-				builder.append(message, stopGradient, messageLength);
+				builder.append(message, Math.min(nextGradiensPos, stopGradient), Math.min(nextGradiensPos, messageLength));
 			}
 		}
 		return builder.toString();
