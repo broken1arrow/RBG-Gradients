@@ -17,7 +17,7 @@ public class TextTranslator {
 	private static final List<String> SPECIAL_SIGN = Arrays.asList("&l", "&n", "&o", "&k", "&m");
 
 	/**
-	 * This is for compenent when you want to send message
+	 * This is for component when you want to send message
 	 * thru vanilla minecraft(MNS).
 	 * DO NOT WORK IN SPIGOT API.Use {@link #toSpigotFormat(String)}
 	 * <p>
@@ -30,12 +30,12 @@ public class TextTranslator {
 	 * @return json to string.
 	 */
 
-	public static String toCompenent(String message) {
-		return toCompenent(message, null);
+	public static String toComponent(String message) {
+		return toComponent(message, null);
 	}
 
 	/**
-	 * This is for compenent when you want to send message
+	 * This is for component when you want to send message
 	 * thru vanilla minecraft(MNS).
 	 * DO NOT WORK IN SPIGOT API. Use {@link #toSpigotFormat(String)}
 	 * <p>
@@ -45,19 +45,19 @@ public class TextTranslator {
 	 * <#5e4fa2:#f79459> for gradient (use §/&r to stop gradient).
 	 *
 	 * @param message      your string message.
-	 * @param defaultColor set defult color when color are not set in message.
+	 * @param defaultColor set default color when colors are not set in the message.
 	 * @return json to string.
 	 */
 
-	public static String toCompenent(String message, String defaultColor) {
-		JsonArray jsonarray = new JsonArray();
-		Component.Builder compenent = new Component.Builder();
+	public static String toComponent(String message, String defaultColor) {
+		JsonArray jsonArray = new JsonArray();
+		Component.Builder component = new Component.Builder();
 		Matcher matcherGradient = GRADIENT_PATTERN.matcher(message);
 		if (defaultColor == null || defaultColor.equals(""))
 			defaultColor = "white";
 
 		if (matcherGradient.find()) {
-			message = createGradient(message);
+			message = createGradients(message);
 		}
 		StringBuilder builder = new StringBuilder(message.length());
 		StringBuilder hex = new StringBuilder();
@@ -76,9 +76,9 @@ public class TextTranslator {
 					for (int j = 0; j < 7; j++) {
 						hex.append(message.charAt(i + 1 + j));
 					}
-					boolean hexCode = isValidHexaCode(hex.toString());
-					checkChar = hexCode;
-					checkHex = hexCode;
+					boolean isHexCode = isValidHexCode(hex.toString());
+					checkChar = isHexCode;
+					checkHex = isHexCode;
 				} else checkChar = false;
 			} else checkChar = false;
 
@@ -92,16 +92,7 @@ public class TextTranslator {
 					letter += 32;
 				}
 				String format;
-
 				if (checkHex) {
-					/*StringBuilder hex = new StringBuilder();
-					for (int j = 0; j < 7; j++) {
-						hex.append(message.charAt(i + j));
-					}
-					if (!isValidHexaCode(hex.toString())) {
-						System.out.println("this " + hex + " are not a hex color");
-						continue;
-					}*/
 					format = hex.toString();
 					i += 7;
 				} else {
@@ -116,46 +107,44 @@ public class TextTranslator {
 					continue;
 				}
 				if (builder.length() > 0) {
-
-					//System.out.println("builder oute " + builder.toString());
-					compenent.message(builder.toString());
+					component.message(builder.toString());
 					builder = new StringBuilder();
-					jsonarray.add(compenent.build().toJson());
-					compenent = new Component.Builder();
+					jsonArray.add(component.build().toJson());
+					component = new Component.Builder();
 
 				}
 				if (format.equals(ChatColors.BOLD.getName())) {
-					compenent.bold(true);
+					component.bold(true);
 				} else if (format.equals(ChatColors.ITALIC.getName())) {
-					compenent.italic(true);
+					component.italic(true);
 				} else if (format.equals(ChatColors.UNDERLINE.getName())) {
-					compenent.underline(true);
+					component.underline(true);
 				} else if (format.equals(ChatColors.STRIKETHROUGH.getName())) {
-					compenent.strikethrough(true);
+					component.strikethrough(true);
 				} else if (format.equals(ChatColors.MAGIC.getName())) {
-					compenent.obfuscated(true);
+					component.obfuscated(true);
 				} else if (format.equals(ChatColors.RESET.getName())) {
 					format = defaultColor;
-					compenent.reset(true);
-					compenent.colorCode(format);
+					component.reset(true);
+					component.colorCode(format);
 				} else {
-					compenent.colorCode(format);
+					component.colorCode(format);
 				}
 				continue;
 			}
 			builder.append(letter);
 		}
 
-		compenent.message(builder.toString());
-		jsonarray.add(compenent.build().toJson());
+		component.message(builder.toString());
+		jsonArray.add(component.build().toJson());
 
-		if (jsonarray.size() > 1) {
+		if (jsonArray.size() > 1) {
 			JsonObject jsonObject = new JsonObject();
-			jsonObject.add("extra", jsonarray);
+			jsonObject.add("extra", jsonArray);
 			jsonObject.addProperty("text", "");
 			return jsonObject.toString();
 		}
-		return compenent.build() + "";
+		return component.build() + "";
 	}
 
 	/**
@@ -172,7 +161,7 @@ public class TextTranslator {
 		Matcher matcherGradient = GRADIENT_PATTERN.matcher(message);
 
 		if (matcherGradient.find()) {
-			message = createGradient(message);
+			message = createGradients(message);
 			message = message.replace("§#", "<#");
 		}
 		Matcher matcher = HEX_PATTERN.matcher(message);
@@ -187,36 +176,37 @@ public class TextTranslator {
 	}
 
 	/**
-	 * Create an string with colors added on every letter (some are after the colorcode and to message length or to &r).
+	 * Create a string with colors added on every letter
+	 * (some are after the color code and to message length or to &r).
 	 *
 	 * @param message message you want to check and translate
-	 * @return string with added gradient and rest uneffected some are outside the gradient range.
+	 * @return string with added gradient and rest unaffected some are outside the gradient range.
 	 */
 
-	private static String createGradient(String message) {
+	private static String createGradients(String message) {
 
-		Matcher gradiensMatcher = GRADIENT_PATTERN.matcher(message);
+		Matcher gradientsMatcher = GRADIENT_PATTERN.matcher(message);
 		StringBuilder specialSign = new StringBuilder();
 		StringBuilder builder = new StringBuilder();
 		int messageLength = message.length();
 		int nextGradiensPos = 0;
-		while (gradiensMatcher.find()) {
-			String match = gradiensMatcher.group(0);
+		while (gradientsMatcher.find()) {
+			String match = gradientsMatcher.group(0);
 
 			int startGradient = nextGradiensPos > 0 ? nextGradiensPos : message.indexOf(match);
 			int stopGradient = checkForR(message.substring(startGradient)) != -1 ? startGradient + checkForR(message.substring(startGradient)) : message.length();
 
 			String[] split = match.substring(1, match.length() - 1).split(":");
-			String coloriseMsg = message.substring(startGradient, stopGradient).replace(match, "");
+			String colorizeMsg = message.substring(startGradient, stopGradient).replace(match, "");
 
 			for (String color : SPECIAL_SIGN) {
-				if (coloriseMsg.contains(color)) {
+				if (colorizeMsg.contains(color)) {
 					specialSign = new StringBuilder();
 					specialSign.append(color);
-					coloriseMsg = coloriseMsg.replace(color, "");
+					colorizeMsg = colorizeMsg.replace(color, "");
 				} else specialSign = new StringBuilder();
 			}
-			int step = coloriseMsg.length();
+			int step = colorizeMsg.length();
 			if (split.length > 1) {
 				String startColor = split[0];
 				Color firstColor = hexToRgb(startColor);
@@ -233,7 +223,7 @@ public class TextTranslator {
 				builder.append(message, Math.max(nextGradiensPos, 0), startGradient);
 				for (int i = 0; i < step; i++) {
 					String colors = convertRGBtoHex(firstColor.getRed() + ((stepRed * i) * direction[0]), firstColor.getGreen() + ((stepGreen * i) * direction[1]), firstColor.getBlue() + ((stepBlue * i) * direction[2]));
-					builder.append("<").append(colors).append(">").append(specialSign).append(coloriseMsg.charAt(i));
+					builder.append("<").append(colors).append(">").append(specialSign).append(colorizeMsg.charAt(i));
 				}
 
 				String gradentMessage = message.substring(stopGradient, messageLength);
@@ -241,7 +231,7 @@ public class TextTranslator {
 					Matcher gradiensMatch = GRADIENT_PATTERN.matcher(gradentMessage);
 					if (gradiensMatch.find()) {
 						nextGradiensPos = (stopGradient + gradentMessage.indexOf(gradiensMatch.group(0)));
-					}
+					} else nextGradiensPos = messageLength;
 				}
 				builder.append(message, Math.min(nextGradiensPos, stopGradient), Math.min(nextGradiensPos, messageLength));
 			}
@@ -250,12 +240,12 @@ public class TextTranslator {
 	}
 
 	/**
-	 * Convert rbg to hex.
+	 * Convert RGB to hex.
 	 *
 	 * @param R red color.
 	 * @param G green color.
 	 * @param B blue color.
-	 * @return hex color or 0 if rgb values is over 255 or below 0.
+	 * @return hex color or 0 if RGB values are over 255 or below 0.
 	 */
 	private static String convertRGBtoHex(int R, int G, int B) {
 		if ((R >= 0 && R <= 255)
@@ -276,7 +266,7 @@ public class TextTranslator {
 	}
 
 	/**
-	 * turn hex to rbg.
+	 * convert hex to RGB.
 	 *
 	 * @param colorStr hex you want to transform.
 	 * @return RBGcolors.
@@ -301,10 +291,10 @@ public class TextTranslator {
 	}
 
 	/**
-	 * Check if it valid color symbole
+	 * Check if it valid color symbol.
 	 *
-	 * @param message check color symbole
-	 * @return true if it are valid color symbole.
+	 * @param message check color symbol.
+	 * @return true if it is valid color symbol.
 	 */
 
 	private static boolean checkIfColor(char message) {
@@ -317,12 +307,12 @@ public class TextTranslator {
 	}
 
 	/**
-	 * Check if it valid hex or not.
+	 * Check if it is a valid hex or not.
 	 *
-	 * @param str you whant to check
-	 * @return true if it vaild hex color.
+	 * @param str you want to check
+	 * @return true if it valid hex color.
 	 */
-	public static boolean isValidHexaCode(String str) {
+	public static boolean isValidHexCode(String str) {
 		// Regex to check valid hexadecimal color code.
 		String regex = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
 
