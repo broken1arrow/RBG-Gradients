@@ -17,16 +17,16 @@ You can add colorcode after &r it will work use§r too or use big litter like th
 ```
 //Json
 TextTranslator.toCompenent("your message");
-//or use this So can you also set own defult color.
+//or use this So can you also set your default color.
 
-TextTranslator.toCompenent("your message","set defult color");
+TextTranslator.toComponent("your message","set defult color");
 
 //spigot format.
 TextTranslator.toSpigotFormat("your message");
 
-//I have also added check you can use if a string contains valid hex colorcode.
-//I alredy check it in the code, but if you need chexk it self, you can use this.
-TextTranslator.isValidHexaCode("your hex you want to check");
+//I have also added a check you can use if a string contains a valid hex color code.
+//I already check it in the code, but if you need to check itself, you can use this.
+TextTranslator.isValidHexCode("your hex you want to check");
 
 ```
 ## To get the api
