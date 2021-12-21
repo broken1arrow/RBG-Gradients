@@ -1,5 +1,6 @@
 ## This liberary create mincraft compatible json strings and also have Spigot support.
 
+[![](https://jitpack.io/v/broken1arrow/RBG-Gradients.svg)](https://jitpack.io/#broken1arrow/RBG-Gradients)
 ## It suport this color format.
 
 * &5/§5 (normal color codes)
