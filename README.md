@@ -10,7 +10,7 @@
 You add colors as you normally do. Only diffrence are Gradiens.
 You can do for example:
 "this tex will not have gradient<#5e4fa2:#f79459>but this text will have gradient &rthis will not have gradient."
-You can add color code after &r it will work use§r too or use big litter like this &R.
+You can add color code after &r it will work use §r too or use big litter like this &R.
 
 
 ## Two methods you can use.
