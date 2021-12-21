@@ -39,7 +39,7 @@ TextTranslator.isValidHexCode("your hex you want to check");
 		</repository>
 	</repositories>
 	
-   </repositories>
+     <dependencies>
  	<dependency>
 	    <groupId>com.github.broken1arrow</groupId>
 	    <artifactId>RBG-Gradients</artifactId>
