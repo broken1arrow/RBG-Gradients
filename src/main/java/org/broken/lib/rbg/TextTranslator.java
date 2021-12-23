@@ -162,15 +162,14 @@ public class TextTranslator {
 
 		if (matcherGradient.find()) {
 			message = createGradients(message);
-			message = message.replace("§#", "<#");
 		}
 		Matcher matcher = HEX_PATTERN.matcher(message);
 		while (matcher.find()) {
 			String match = matcher.group(0);
-			String[] hexSplitedToFitRBG = match.split("");
-			if (!(hexSplitedToFitRBG.length >= 8))
+			int firstPos = match.indexOf("#");
+			if (!(match.length() >= 9))
 				System.out.println("you has wrongly set up the hex color it shall be 6 in length");
-			message = message.replace(match, "&x&" + hexSplitedToFitRBG[2] + "&" + hexSplitedToFitRBG[3] + "&" + hexSplitedToFitRBG[4] + "&" + hexSplitedToFitRBG[5] + "&" + hexSplitedToFitRBG[6] + "&" + hexSplitedToFitRBG[7]);
+			message = message.replace(match, "&x&" + match.charAt(firstPos + 1) + "&" + match.charAt(firstPos + 2) + "&" + match.charAt(firstPos + 3)  + "&" + match.charAt(firstPos + 4)  + "&" + match.charAt(firstPos + 5) + "&" + match.charAt(firstPos + 6));
 		}
 		return ChatColor.translateAlternateColorCodes('&', message);
 	}
@@ -196,8 +195,9 @@ public class TextTranslator {
 			int startGradient = nextGradiensPos > 0 ? nextGradiensPos : message.indexOf(match);
 			int stopGradient = checkForR(message.substring(startGradient)) != -1 ? startGradient + checkForR(message.substring(startGradient)) : message.length();
 
-			String[] split = match.substring(1, match.length() - 1).split(":");
-			String colorizeMsg = message.substring(startGradient, stopGradient).replace(match, "");
+			String gradientsRaw = match.substring(1, match.length() - 1);
+			int splitPos = gradientsRaw.indexOf(":");
+			String colorizeMsg = message.substring(startGradient + match.length(), stopGradient);
 
 			for (String color : SPECIAL_SIGN) {
 				if (colorizeMsg.contains(color)) {
@@ -207,34 +207,33 @@ public class TextTranslator {
 				} else specialSign = new StringBuilder();
 			}
 			int step = colorizeMsg.length();
-			if (split.length > 1) {
-				String startColor = split[0];
-				Color firstColor = hexToRgb(startColor);
-				Color endColor = hexToRgb(split[1]);
-				int stepRed = Math.abs(firstColor.getRed() - endColor.getRed()) / (step - 1);
-				int stepGreen = Math.abs(firstColor.getGreen() - endColor.getGreen()) / (step - 1);
-				int stepBlue = Math.abs(firstColor.getBlue() - endColor.getBlue()) / (step - 1);
 
-				int[] direction = new int[]{
-						firstColor.getRed() < endColor.getRed() ? +1 : -1,
-						firstColor.getGreen() < endColor.getGreen() ? +1 : -1,
-						firstColor.getBlue() < endColor.getBlue() ? +1 : -1};
+			Color firstColor = hexToRgb(gradientsRaw.substring(0, splitPos));
+			Color endColor = hexToRgb(gradientsRaw.substring(splitPos + 1));
+			int stepRed = Math.abs(firstColor.getRed() - endColor.getRed()) / (step - 1);
+			int stepGreen = Math.abs(firstColor.getGreen() - endColor.getGreen()) / (step - 1);
+			int stepBlue = Math.abs(firstColor.getBlue() - endColor.getBlue()) / (step - 1);
 
-				builder.append(message, Math.max(nextGradiensPos, 0), startGradient);
-				for (int i = 0; i < step; i++) {
-					String colors = convertRGBtoHex(firstColor.getRed() + ((stepRed * i) * direction[0]), firstColor.getGreen() + ((stepGreen * i) * direction[1]), firstColor.getBlue() + ((stepBlue * i) * direction[2]));
-					builder.append("<").append(colors).append(">").append(specialSign).append(colorizeMsg.charAt(i));
-				}
+			int[] direction = new int[]{
+					firstColor.getRed() < endColor.getRed() ? +1 : -1,
+					firstColor.getGreen() < endColor.getGreen() ? +1 : -1,
+					firstColor.getBlue() < endColor.getBlue() ? +1 : -1};
 
-				String gradentMessage = message.substring(stopGradient, messageLength);
-				if (gradentMessage.contains("<#")) {
-					Matcher gradiensMatch = GRADIENT_PATTERN.matcher(gradentMessage);
-					if (gradiensMatch.find()) {
-						nextGradiensPos = (stopGradient + gradentMessage.indexOf(gradiensMatch.group(0)));
-					} else nextGradiensPos = messageLength;
-				}
-				builder.append(message, Math.min(nextGradiensPos, stopGradient), Math.min(nextGradiensPos, messageLength));
+			builder.append(message, Math.max(nextGradiensPos, 0), startGradient);
+			for (int i = 0; i < step; i++) {
+				String colors = convertRGBtoHex(firstColor.getRed() + ((stepRed * i) * direction[0]), firstColor.getGreen() + ((stepGreen * i) * direction[1]), firstColor.getBlue() + ((stepBlue * i) * direction[2]));
+				builder.append("<").append(colors).append(">").append(specialSign).append(colorizeMsg.charAt(i));
 			}
+
+			String gradentMessage = message.substring(stopGradient, messageLength);
+			if (gradentMessage.contains("<#")) {
+				Matcher gradiensMatch = GRADIENT_PATTERN.matcher(gradentMessage);
+				if (gradiensMatch.find()) {
+					nextGradiensPos = (stopGradient + gradentMessage.indexOf(gradiensMatch.group(0)));
+				} else nextGradiensPos = messageLength;
+			}
+			builder.append(message, Math.min(nextGradiensPos, stopGradient), Math.min(nextGradiensPos, messageLength));
+
 		}
 		return builder.toString();
 	}
@@ -299,8 +298,7 @@ public class TextTranslator {
 
 	private static boolean checkIfColor(char message) {
 
-		String[] colorcodes = ChatColors.ALL_CODES.split("");
-		for (String color : colorcodes)
+		for (String color : ChatColors.ALL_CODES)
 			if (color.equals(String.valueOf(message)))
 				return true;
 		return false;
