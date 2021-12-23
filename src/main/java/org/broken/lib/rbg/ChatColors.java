@@ -17,7 +17,7 @@ public class ChatColors {
 	 * you need to dynamically convert colour codes from your custom format.
 	 */
 	public static final char COLOR_CHAR = '\u00A7';
-	public static final String ALL_CODES = "0123456789AaBbCcDdEeFfKkLlMmNnOoRrXx";
+	public static final String[] ALL_CODES = {"0","1","2","3","4","5","6","7","8","9","A","a","B","b","C","c","D","d","E","e","F","f","K","k","L","l","M","m","N","n","O","o","R","r","X","x"};
 	/**
 	 * Pattern to remove all colour codes.
 	 */
