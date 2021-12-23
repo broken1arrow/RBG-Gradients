@@ -17,7 +17,7 @@ You can add color code after &r it will work use §r too or use big litter like 
 ## Two methods you can use.
 ```
 //Json
-TextTranslator.toCompenent("your message");
+TextTranslator.toComponent("your message");
 //or use this So can you also set your default color.
 
 TextTranslator.toComponent("your message","set defult color");
