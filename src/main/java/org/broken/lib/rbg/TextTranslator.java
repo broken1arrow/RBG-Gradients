@@ -231,6 +231,8 @@ public class TextTranslator {
 				if (gradiensMatch.find()) {
 					nextGradiensPos = (stopGradient + gradentMessage.indexOf(gradiensMatch.group(0)));
 				} else nextGradiensPos = messageLength;
+			}else if (nextGradiensPos <= 0) {
+				nextGradiensPos = messageLength;
 			}
 			builder.append(message, Math.min(nextGradiensPos, stopGradient), Math.min(nextGradiensPos, messageLength));
 
