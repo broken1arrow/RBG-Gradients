@@ -103,7 +103,6 @@ public class TextTranslator {
 					}
 				}
 				if (format == null) {
-					System.out.println("foramt nulllll");
 					continue;
 				}
 				if (builder.length() > 0) {
