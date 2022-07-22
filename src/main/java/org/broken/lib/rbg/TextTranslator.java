@@ -244,7 +244,6 @@ public final class TextTranslator implements Interpolator {
 			StringBuilder builder = new StringBuilder();
 			for (String messag : splitOnGradient(type,message))
 				builder.append(convertToMulitGradiens(type, messag));
-			System.out.println("result " + builder);
 			messageCopy = builder.toString();
 		}
 		if (messageCopy == null)
@@ -296,7 +295,6 @@ public final class TextTranslator implements Interpolator {
 			builder.append(multiRgbGradient(type, message.substring(Math.max(startIndex, 0), end > 0 ? end : nextEnd > 0 ? nextEnd : message.length()), colorList, checkportions(colorList, portionsList)));
 			if (end > 0 || nextEnd > 0)
 				builder.append(message, Math.max(end, 0), message.length());
-			System.out.println("test == " + builder);
 			return builder.toString();
 
 
