@@ -6,12 +6,15 @@
 * &5/§5 (normal color codes)
 * <#55F758> (hex)
 * <#5e4fa2:#f79459> (Gradiens format)
+* gradiens_<#6B023E:...> your text here -> you need have at least 2 colors or more
+* gradiens_hsv_<#6B023E:...> your text here -> you need have at least 2 colors or more
+* gradiens_hsv_<#6B023E:...>_portion<0.2:...> your text here -> to set portion of every color (if you have to colors can you ony have 1 value).
 
 ## How to use colors.
 You add colors as you normally do. Only diffrence are Gradiens.
 You can do for example:
-"this tex will not have gradient<#5e4fa2:#f79459>but this text will have gradient &rthis will not have gradient."
-You can add color code after &r it will work use §r too or use big litter like this &R.
+"&7this tex will not have gradient<#5e4fa2:#f79459>but this text will have gradient &6this will not have gradient."
+
 
 
 ## Two methods you can use.
@@ -27,7 +30,7 @@ TextTranslator.toSpigotFormat("your message");
 
 //I have also added a check you can use if a string contains a valid hex color code.
 //I already check it in the code, but if you need to check itself, you can use this.
-TextTranslator.isValidHexCode("your hex you want to check");
+TextTranslator.getInstance().isValidHexCode("your hex you want to check");
 
 ```
 ## To get the api
