@@ -407,6 +407,9 @@ public final class TextTranslator implements Interpolator {
 	}
 
 	public String multiRgbGradient(GradientType type,String str, Color[] colors, @Nullable Double[] portions, Interpolator interpolator) {
+		if (colors.length < 2) {
+			return (colors.length == 1 ? "<" + convertColortoHex(colors[0]) + ">" + str : str);
+		}
 		final Double[] p;
 		if (portions == null) {
 			p = new Double[colors.length - 1];
@@ -414,8 +417,6 @@ public final class TextTranslator implements Interpolator {
 		} else {
 			p = portions;
 		}
-
-		Preconditions.checkArgument(colors.length >= 2);
 		Preconditions.checkArgument(p.length == colors.length - 1);
 
 		final StringBuilder builder = new StringBuilder();
@@ -623,6 +624,10 @@ public final class TextTranslator implements Interpolator {
 					Integer.valueOf(red + red, 16),
 					Integer.valueOf(green + green, 16),
 					Integer.valueOf(blue + blue, 16));
+		}
+		if (colorStr.length() < 7){
+			System.out.println("[RGB] This hex color is not vaild " + colorStr);
+			return new Color(Color.WHITE.getRGB());
 		}
 		return new Color(
 				Integer.valueOf(colorStr.substring(1, 3), 16),
