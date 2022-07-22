@@ -747,8 +747,9 @@ public final class TextTranslator implements Interpolator {
 	public static String[] getMultiColors(String message, int startIndex) {
 		String subcolor = message.substring(startIndex);
 		int endOfColor = subcolor.indexOf(">");
-		final String substring = subcolor.substring(0, endOfColor > 0 ? endOfColor + 1 : message.length());
-		return substring.substring(14, substring.length() - 1).split(":");
+		final String substring = subcolor.substring(0, endOfColor > 0 ? endOfColor + 1 : subcolor.length());
+		if (getNextColor(substring) < 0) return new String[0];
+		return substring.substring(1, substring.length() - 1).split(":");
 	}
 
 	public int getLastGradientMatch(String message, GradientType type) {
