@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 /**
  * Create one immutable instance.
  */
-public class Component {
+public final class Component {
 
 	private final String colorCode;
 	private final String message;

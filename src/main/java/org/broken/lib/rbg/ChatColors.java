@@ -4,12 +4,11 @@ import com.google.common.base.Preconditions;
 import lombok.Getter;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 import java.util.regex.Pattern;
 
-public class ChatColors {
+public final class ChatColors {
 
 
 	/**
@@ -17,7 +16,10 @@ public class ChatColors {
 	 * you need to dynamically convert colour codes from your custom format.
 	 */
 	public static final char COLOR_CHAR = '\u00A7';
+	public static final char COLOR_AMPERSAND = '\u0026';
 	public static final String[] ALL_CODES = {"0","1","2","3","4","5","6","7","8","9","A","a","B","b","C","c","D","d","E","e","F","f","K","k","L","l","M","m","N","n","O","o","R","r","X","x"};
+	public static final char[] ALL_COLOR_CODES = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'R', 'r', 'X', 'x'};
+	private static final char[] SPECIAL_SIGN = {'l', 'n', 'o', 'k', 'm','r'};
 	/**
 	 * Pattern to remove all colour codes.
 	 */
@@ -167,6 +169,9 @@ public class ChatColors {
 	 */
 	public static ChatColors getByChar(char code) {
 		return BY_CHAR.get(code);
+	}
+	public char[] getSpecialSign(){
+		return SPECIAL_SIGN;
 	}
 
 	public static ChatColors of(Color color) {
