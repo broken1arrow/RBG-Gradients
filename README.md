@@ -8,6 +8,7 @@
 * <#5e4fa2:#f79459> (Gradiens format)
 * gradiens_<#6B023E:...> your text here -> you need have at least 2 colors or more
 * gradiens_hsv_<#6B023E:...> your text here -> you need have at least 2 colors or more
+* gradiens_<#6B023E:...>_portion<0.2:...> your text here -> to set portion of every color (if you have to colors can you ony have 1 value). 
 * gradiens_hsv_<#6B023E:...>_portion<0.2:...> your text here -> to set portion of every color (if you have to colors can you ony have 1 value).
 
 ## How to use colors.
