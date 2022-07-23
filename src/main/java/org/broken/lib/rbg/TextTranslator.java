@@ -280,7 +280,6 @@ public final class TextTranslator implements Interpolator {
 				portionsList = Arrays.stream(getValuesInside(portion, end)).map(Double::parseDouble).toArray(Double[]::new);
 				message = message.replace(portion.substring(0, end + 1), "");
 			}
-
 			Color[] colorList = Arrays.stream(getMultiColors(subcolor, subIndex)).map(TextTranslator::hexToRgb).toArray(Color[]::new);
 			message = message.replace(subcolor.substring(0, message.length()), "");
 
@@ -291,8 +290,7 @@ public final class TextTranslator implements Interpolator {
 			int nextEnd = getNextColor(message.substring(end + 1));
 			if (startIndex > 0)
 				builder.append(message, 0, startIndex);
-
-			builder.append(multiRgbGradient(type, message.substring(Math.max(startIndex, 0), end > 0 ? end : nextEnd > 0 ? nextEnd : message.length()), colorList, checkportions(colorList, portionsList)));
+			builder.append(multiRgbGradient(type, message.substring(Math.max(startIndex, 0), nextEnd > 0 ? nextEnd : end > 0 ? end : message.length()), colorList, checkportions(colorList, portionsList)));
 			if (end > 0 || nextEnd > 0)
 				builder.append(message, Math.max(end, 0), message.length());
 			return builder.toString();
@@ -587,7 +585,7 @@ public final class TextTranslator implements Interpolator {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < message.length(); i++) {
 			char mess = message.charAt(i);
-			if (mess == 'g' && i + 18 < message.length()) {
+			if (mess == 'g' && i + 8 < message.length()) {
 				StringBuilder build = new StringBuilder();
 				boolean isgradient = false;
 				for (int check = (i > 0 ? i - 1 : 0); check < message.length(); check++) {
@@ -626,7 +624,7 @@ public final class TextTranslator implements Interpolator {
 					Integer.valueOf(blue + blue, 16));
 		}
 		if (colorStr.length() < 7){
-			System.out.println("[RGB] This hex color is not vaild " + colorStr);
+			System.out.println("[RBG-Gradients] This hex color is not vaild " + colorStr);
 			return new Color(Color.WHITE.getRGB());
 		}
 		return new Color(
@@ -725,17 +723,18 @@ public final class TextTranslator implements Interpolator {
 	}
 
 	public static int getNextColor(String subMessage) {
-		int nextGrad = subMessage.indexOf("<#");
-		if (nextGrad < 0)
-			nextGrad = checkIfContainsColor(subMessage);
-		return nextGrad;
+		return Math.min(subMessage.indexOf("<#"), checkIfContainsColor(subMessage));
 	}
 
 	public static int getEndOfColor(String subMessage) {
 		int nextGrad = subMessage.indexOf(">");
+		int vanillaColor = checkIfContainsColor(subMessage);
 		if (nextGrad < 0)
-			nextGrad = checkIfContainsColor(subMessage);
-		return nextGrad;
+			nextGrad = 0;
+		if (vanillaColor < 0)
+			vanillaColor = 0;
+
+		return Math.min(nextGrad, vanillaColor);
 	}
 
 	public static String getStringStriped(String message, int startIndex, int endIndex) {
@@ -748,7 +747,6 @@ public final class TextTranslator implements Interpolator {
 		String subcolor = message.substring(startIndex);
 		int endOfColor = subcolor.indexOf(">");
 		final String substring = subcolor.substring(0, endOfColor > 0 ? endOfColor + 1 : subcolor.length());
-		if (getNextColor(substring) < 0) return new String[0];
 		return substring.substring(1, substring.length() - 1).split(":");
 	}
 

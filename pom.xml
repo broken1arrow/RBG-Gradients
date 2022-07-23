@@ -6,7 +6,7 @@
 
     <groupId>org.broken.lib.rbg</groupId>
     <artifactId>rbg.gradiens</artifactId>
-    <version>0.08-SNAPSHOT</version>
+    <version>0.09-SNAPSHOT</version>
 
     <properties>
         <main.class>TextTranslator</main.class>

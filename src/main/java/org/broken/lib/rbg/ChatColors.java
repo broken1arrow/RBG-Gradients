@@ -16,6 +16,10 @@ public final class ChatColors {
 	 * you need to dynamically convert colour codes from your custom format.
 	 */
 	public static final char COLOR_CHAR = '\u00A7';
+	/**
+	 * The special character which prefixes all chat colour codes. Use this if
+	 * you need to dynamically convert colour codes from your custom format.
+	 */
 	public static final char COLOR_AMPERSAND = '\u0026';
 	public static final String[] ALL_CODES = {"0","1","2","3","4","5","6","7","8","9","A","a","B","b","C","c","D","d","E","e","F","f","K","k","L","l","M","m","N","n","O","o","R","r","X","x"};
 	public static final char[] ALL_COLOR_CODES = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'a', 'B', 'b', 'C', 'c', 'D', 'd', 'E', 'e', 'F', 'f', 'R', 'r', 'X', 'x'};
