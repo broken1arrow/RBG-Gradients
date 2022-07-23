@@ -729,12 +729,8 @@ public final class TextTranslator implements Interpolator {
 	public static int getEndOfColor(String subMessage) {
 		int nextGrad = subMessage.indexOf(">");
 		int vanillaColor = checkIfContainsColor(subMessage);
-		if (nextGrad < 0)
-			nextGrad = 0;
-		if (vanillaColor < 0)
-			vanillaColor = 0;
-
-		return Math.min(nextGrad, vanillaColor);
+		
+		return Math.max(nextGrad, vanillaColor);
 	}
 
 	public static String getStringStriped(String message, int startIndex, int endIndex) {
