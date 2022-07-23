@@ -286,12 +286,12 @@ public final class TextTranslator implements Interpolator {
 
 			//MultiGradients multiGradients = new MultiGradients(striped, colorList, portionsList);
 			StringBuilder builder = new StringBuilder();
-			int end = getEndOfColor(message);
+			int end = getNextColor(message);
 			int nextEnd = getNextColor(message.substring(end + 1));
 			if (startIndex > 0)
 				builder.append(message, 0, startIndex);
-			builder.append(multiRgbGradient(type, message.substring(Math.max(startIndex, 0), nextEnd > 0 ? nextEnd : end > 0 ? end : message.length()), colorList, checkportions(colorList, portionsList)));
-			if (end > 0 || nextEnd > 0)
+			builder.append(multiRgbGradient(type, message.substring(Math.max(startIndex, 0), end > 0 ? end : message.length()), colorList, checkportions(colorList, portionsList)));
+			if (end > 0)
 				builder.append(message, Math.max(end, 0), message.length());
 			return builder.toString();
 
@@ -723,7 +723,14 @@ public final class TextTranslator implements Interpolator {
 	}
 
 	public static int getNextColor(String subMessage) {
-		return Math.min(subMessage.indexOf("<#"), checkIfContainsColor(subMessage));
+		int nextGrad = subMessage.indexOf("<#");
+		int vanillaColor = checkIfContainsColor(subMessage);
+		if (nextGrad < 0)
+			return vanillaColor;
+		if (vanillaColor < 0)
+			return nextGrad;
+
+		return Math.min(nextGrad, vanillaColor);
 	}
 
 	public static int getEndOfColor(String subMessage) {
